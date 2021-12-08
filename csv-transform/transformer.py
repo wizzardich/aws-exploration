@@ -17,7 +17,7 @@ def transform_csv(event, context):
 
     try:
         items = list()
-        with tempfile.TemporaryFile() as temp_file:
+        with tempfile.NamedTemporaryFile() as temp_file:
             # Download and parse the csv
             s3.download_file(bucket, key, temp_file.name)
             reader = csv.reader(temp_file)
