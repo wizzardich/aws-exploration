@@ -7,8 +7,7 @@ import urllib
 import boto3
 
 s3 = boto3.client('s3')
-dynamodb = boto3.client('dynamodb')
-
+dynamodb = boto3.resource('dynamodb')
 
 def transform_csv(event, context):
     """Main lambda logic"""
@@ -31,7 +30,7 @@ def transform_csv(event, context):
         people_table = dynamodb.Table("People")
 
         for record in items:
-            people_table.put_item(Item=record)
+            people_table.put_item(Table="People", Item=record)
 
     except Exception as exception:
         print(exception)
