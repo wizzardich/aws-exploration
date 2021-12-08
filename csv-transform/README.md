@@ -12,3 +12,9 @@ code a bit more then I'm comfortable with.
 
 I'm also picking DynamoDB as the target database, due to ease of setup -- I'll try to use CDK to set all of the needed
 things up.
+
+I did stumble a bit on:
+
+- tempfiles in python - constantly forget how those work, unforutantely. Settled on just having a hardcoded target, as
+  the environment is anyway transient
+- policy definition is inlined for the lambda, though I would create a more durable solution in a production scenario
