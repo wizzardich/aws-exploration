@@ -1,7 +1,6 @@
 """Basic lambda to transform csv file data to DB records"""
 
 import csv
-import tempfile
 import urllib
 
 import boto3
@@ -16,9 +15,10 @@ def transform_csv(event, context):
 
     try:
         items = list()
-        with tempfile.NamedTemporaryFile() as temp_file:
-            # Download and parse the csv
-            s3.download_file(bucket, key, temp_file.name)
+        temp_file_name = "/tmp/temp.csv"
+        # Download and parse the csv
+        s3.download_file(bucket, key, temp_file_name)
+        with open(temp_file_name, 'r') as temp_file:
             reader = csv.reader(temp_file)
             for row in reader:
                 first_name, last_name, age, title = row
@@ -30,7 +30,7 @@ def transform_csv(event, context):
         people_table = dynamodb.Table("People")
 
         for record in items:
-            people_table.put_item(Table="People", Item=record)
+            people_table.put_item(Item=record)
 
     except Exception as exception:
         print(exception)
